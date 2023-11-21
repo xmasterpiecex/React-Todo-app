@@ -1,9 +1,6 @@
 import { useState } from 'react';
 import { Header } from './components/header';
-import { TasksBoard } from './components/tasksBoard';
-import { NewTodoBtn } from './components/newTodoBtn';
-// import axios from 'axios';
-// import { SingleTask } from './components/singleTask';
+import { AllBoardsContainer } from './components/allBoardsContainer';
 
 function App() {
   const [count, setCount] = useState(0);
@@ -11,12 +8,7 @@ function App() {
   return (
     <>
       <Header />
-      <NewTodoBtn text="Add New Todo +" />
-      <div className="boards">
-        <div className="content-container">
-          <TasksBoard />
-        </div>
-      </div>
+      <AllBoardsContainer />
       <button onClick={() => setCount((count) => count + 1)}>
         count is {count}
       </button>

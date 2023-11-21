@@ -4,19 +4,19 @@ import axios from 'axios';
 export function CreateTodoForm({
   onClose,
 }: {
-  onClose: React.MouseEventHandler;
+  onClose: React.Dispatch<React.SetStateAction<boolean>>;
 }) {
   const [title, setTitle] = useState('');
   const [descr, setDescr] = useState('');
   const [priority, setPriority] = useState('');
 
-  const postData = () => {
-    axios.post(`https://65579c69bd4bcef8b612f35e.mockapi.io/someData`, {
+  const handleReqClose = async () => {
+    await axios.post(`https://65579c69bd4bcef8b612f35e.mockapi.io/someData`, {
       title,
       descr,
       priority,
     });
-    onClose;
+    onClose(false);
   };
 
   return (
@@ -25,7 +25,7 @@ export function CreateTodoForm({
         <div className="form-container">
           <button
             className="close-btn"
-            onClick={onClose}
+            onClick={() => onClose(false)}
           >
             X
           </button>
@@ -74,7 +74,7 @@ export function CreateTodoForm({
               <span style={{ fontSize: '38px' }}>High priority</span>
             </div>
           </div>
-          <button onClick={postData}>Confirm</button>
+          <button onClick={handleReqClose}>Confirm</button>
         </div>
       </div>
     </>

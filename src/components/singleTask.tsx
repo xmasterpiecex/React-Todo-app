@@ -2,7 +2,7 @@ export interface ITasks {
   title: string;
   descr: string;
   priority: string;
-  id?: number;
+  id: number;
 }
 
 export function SingleTask({ props }: { props: ITasks }) {

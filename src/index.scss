@@ -27,6 +27,11 @@ h1 {
   line-height: 1.1;
 }
 
+p {
+  color: #141414;
+  line-break: anywhere;
+}
+
 button {
   border-radius: 8px;
   border: 1px solid transparent;
@@ -36,6 +41,7 @@ button {
   background-color: #1a1a1a;
   cursor: pointer;
   transition: border-color 0.25s;
+  min-width: 35px;
 }
 button:hover {
   border-color: #646cff;
