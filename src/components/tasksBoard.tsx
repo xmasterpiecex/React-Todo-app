@@ -1,4 +1,5 @@
-import { ITasks } from './singleTask';
+import { ITasks } from './allBoardsContainer';
+
 type DeleteTaskFunction = (id: string | number) => Promise<void>;
 
 export function TasksBoard({
@@ -14,17 +15,29 @@ export function TasksBoard({
         {data.map((item) => {
           return (
             <div
-              className="task-container"
+              className={
+                item.priority === 'low'
+                  ? 'task-container low'
+                  : item.priority === 'medium'
+                  ? 'task-container medium'
+                  : item.priority === 'high'
+                  ? 'task-container high'
+                  : ''
+              }
               key={item.id}
             >
               <div className="task-content">
                 <div className="task-header">
+                  <button className="close-btn">Update</button>
                   <span style={{ color: 'black', lineBreak: 'anywhere' }}>
                     {item.title}
                   </span>
+
                   <button
                     className="close-btn"
-                    onClick={() => deleteTask(item.id)}
+                    onClick={() => {
+                      deleteTask(item.id);
+                    }}
                   >
                     Delete
                   </button>

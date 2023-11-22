@@ -35,13 +35,14 @@ p {
 button {
   border-radius: 8px;
   border: 1px solid transparent;
+  margin: 5px;
   padding: 0.6em 1.2em;
   font-weight: 500;
   font-family: inherit;
   background-color: #1a1a1a;
   cursor: pointer;
   transition: border-color 0.25s;
-  min-width: 35px;
+  min-width: fit-content;
 }
 button:hover {
   border-color: #646cff;
@@ -160,35 +161,45 @@ input[type='radio'] {
   margin: 0;
 }
 
-.TESTCARD {
-  background-color: #747bff;
-  border-radius: 25px;
-  width: 300px;
-  height: 150px;
-}
-
-.task-container {
+.task-container.medium {
   display: flex;
   min-width: 450px;
   max-width: 450px;
   min-height: 180px;
-  background-color: #154163;
+  background-color: rgb(142, 109, 233);
   margin: 1em;
-  .task-content {
-    display: flex;
-    flex-direction: column;
-    width: 100%;
-    height: 100%;
-    .task-header {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      padding: 5px;
-      font-size: 20px;
-      border-bottom: 2px solid #141414;
-    }
-    .task-description {
-      padding: 5px;
-    }
-  }
+}
+.task-container.high {
+  display: flex;
+  min-width: 450px;
+  max-width: 450px;
+  min-height: 180px;
+  background-color: #e96262;
+  margin: 1em;
+}
+
+.task-container.low {
+  display: flex;
+  min-width: 450px;
+  max-width: 450px;
+  min-height: 180px;
+  background-color: #efefef;
+  margin: 1em;
+}
+.task-content {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  height: 100%;
+}
+.task-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 5px;
+  font-size: 20px;
+  border-bottom: 2px solid #141414;
+}
+.task-description {
+  padding: 5px;
 }

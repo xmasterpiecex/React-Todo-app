@@ -2,13 +2,19 @@ import { useEffect, useState } from 'react';
 import { createPortal } from 'react-dom';
 import { TasksBoard } from './tasksBoard';
 import axios from 'axios';
-import { ITasks } from './singleTask';
 import { CreateTodoForm } from './createTodoForm';
 type DeleteTaskFunction = (id: string | number) => Promise<void>;
+export interface ITasks {
+  title: string;
+  descr: string;
+  priority: string;
+  id: number;
+}
 
 export function AllBoardsContainer() {
   const [data, setData] = useState<ITasks[]>([]);
   const [showModal, setShowModal] = useState(false);
+
   const fetchAllTasks = async () => {
     await axios
       .get(`https://65579c69bd4bcef8b612f35e.mockapi.io/someData`)
@@ -23,7 +29,10 @@ export function AllBoardsContainer() {
     await axios.delete(
       `https://65579c69bd4bcef8b612f35e.mockapi.io/someData/${id}`
     );
-    fetchAllTasks();
+    const updatedData = data.filter((item) => {
+      id !== item.id;
+    });
+    setData(updatedData);
   };
 
   return (
