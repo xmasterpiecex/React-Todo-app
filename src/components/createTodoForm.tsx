@@ -3,8 +3,10 @@ import axios from 'axios';
 
 export function CreateTodoForm({
   onClose,
+  editing,
 }: {
   onClose: React.Dispatch<React.SetStateAction<boolean>>;
+  editing: React.Dispatch<React.SetStateAction<boolean>>;
 }) {
   const [title, setTitle] = useState('');
   const [descr, setDescr] = useState('');
@@ -20,6 +22,7 @@ export function CreateTodoForm({
       priority,
     });
     onClose(false);
+    editing(false);
   };
 
   return (

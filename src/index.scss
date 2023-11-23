@@ -183,7 +183,7 @@ input[type='radio'] {
   min-width: 450px;
   max-width: 450px;
   min-height: 180px;
-  background-color: #efefef;
+  background-color: rgb(63, 226, 96);
   margin: 1em;
 }
 .task-content {
@@ -200,6 +200,20 @@ input[type='radio'] {
   font-size: 20px;
   border-bottom: 2px solid #141414;
 }
+
 .task-description {
   padding: 5px;
+}
+
+.updating {
+  border: #ffffff 2px solid;
+  padding: 5px;
+  color: black;
+  line-break: anywhere;
+}
+
+.defoult {
+  padding: 5px;
+  color: black;
+  line-break: anywhere;
 }
