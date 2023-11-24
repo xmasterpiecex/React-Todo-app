@@ -5,7 +5,8 @@ type DeleteTaskFunction = (id: string | number) => Promise<void>;
 type UpdateTaskFunction = (
   id: string | number,
   title: string,
-  descr: string
+  descr: string,
+  priority: string
 ) => void;
 
 export function TasksBoard({
@@ -21,6 +22,7 @@ export function TasksBoard({
 }) {
   const [title, setTitle] = useState('');
   const [descr, setDescr] = useState('');
+  const [priority, setPriority] = useState('');
   const [editingItemId, setEditingItemId] = useState<number | null>(null);
 
   const handlerChangesT = (event: React.FormEvent<HTMLDivElement>) => {
@@ -48,7 +50,7 @@ export function TasksBoard({
                     disabled={editing && !isEditing}
                     className="close-btn"
                     onClick={() => {
-                      updateTask(item.id, title, descr);
+                      updateTask(item.id, title, descr, priority);
                       setEditingItemId(item.id);
                     }}
                   >
@@ -69,7 +71,6 @@ export function TasksBoard({
                     className="close-btn"
                     onClick={() => {
                       setEditingItemId(null);
-
                       deleteTask(item.id);
                     }}
                   >
@@ -88,6 +89,54 @@ export function TasksBoard({
                   </p>
                 </div>
               </div>
+              {isEditing && editing ? (
+                <div className="choose-priority">
+                  <span
+                    style={{ padding: '5px', color: 'black', fontSize: '24px' }}
+                  >
+                    Low
+                  </span>
+                  <input
+                    type="radio"
+                    name="priority"
+                    onChange={() => {
+                      setPriority('low');
+                      item.priority = 'low';
+                    }}
+                    value={'low'}
+                  />
+                  <span
+                    style={{ padding: '5px', color: 'black', fontSize: '24px' }}
+                  >
+                    Medium
+                  </span>
+                  <input
+                    type="radio"
+                    name="priority"
+                    onChange={() => {
+                      setPriority('medium');
+                      item.priority = 'medium';
+                    }}
+                    value={'medium'}
+                  />
+                  <span
+                    style={{ padding: '5px', color: 'black', fontSize: '24px' }}
+                  >
+                    High
+                  </span>
+                  <input
+                    type="radio"
+                    name="priority"
+                    onChange={() => {
+                      setPriority('high');
+                      item.priority = 'high';
+                    }}
+                    value={'high'}
+                  />
+                </div>
+              ) : (
+                <></>
+              )}
             </div>
           );
         })}

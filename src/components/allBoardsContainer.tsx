@@ -7,7 +7,8 @@ type DeleteTaskFunction = (id: string | number) => Promise<void>;
 type UpdateTaskFunction = (
   id: string | number,
   title: string,
-  descr: string
+  descr: string,
+  priority: string
 ) => void;
 export interface ITasks {
   title: string;
@@ -40,11 +41,12 @@ export function AllBoardsContainer() {
     setEdit(false);
   };
 
-  const updateAction: UpdateTaskFunction = (id, title, descr) => {
+  const updateAction: UpdateTaskFunction = (id, title, descr, priority) => {
     if (edit) {
       axios.put(`https://65579c69bd4bcef8b612f35e.mockapi.io/someData/${id}`, {
         title,
         descr,
+        priority,
       });
       setEdit(!edit);
     } else {

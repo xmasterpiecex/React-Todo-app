@@ -14,7 +14,8 @@ export function CreateTodoForm({
 
   const handleReqClose = async () => {
     if (title === '' || descr === '' || priority === '') {
-      throw new Error('Fill empty fields');
+      alert('fill all fields');
+      return;
     }
     await axios.post(`https://65579c69bd4bcef8b612f35e.mockapi.io/someData`, {
       title,

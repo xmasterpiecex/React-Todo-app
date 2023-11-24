@@ -27,11 +27,6 @@ h1 {
   line-height: 1.1;
 }
 
-p {
-  color: #141414;
-  line-break: anywhere;
-}
-
 button {
   border-radius: 8px;
   border: 1px solid transparent;
@@ -101,7 +96,6 @@ button:focus-visible {
   display: flex;
   flex-direction: column;
   width: 600px;
-  // height: 600px;
   border-radius: 25px;
   background-color: #ffffff;
   color: #1a1a1a;
@@ -161,31 +155,28 @@ input[type='radio'] {
   margin: 0;
 }
 
-.task-container.medium {
+@mixin task-container($color) {
   display: flex;
+  flex-direction: column;
   min-width: 450px;
   max-width: 450px;
   min-height: 180px;
-  background-color: rgb(142, 109, 233);
   margin: 1em;
+  background-color: $color;
 }
+
+.task-container.medium {
+  @include task-container(rgb(142, 109, 233));
+}
+
 .task-container.high {
-  display: flex;
-  min-width: 450px;
-  max-width: 450px;
-  min-height: 180px;
-  background-color: #e96262;
-  margin: 1em;
+  @include task-container(rgb(233, 99, 99));
 }
 
 .task-container.low {
-  display: flex;
-  min-width: 450px;
-  max-width: 450px;
-  min-height: 180px;
-  background-color: rgb(63, 226, 96);
-  margin: 1em;
+  @include task-container(rgb(63, 226, 96));
 }
+
 .task-content {
   display: flex;
   flex-direction: column;
@@ -216,4 +207,11 @@ input[type='radio'] {
   padding: 5px;
   color: black;
   line-break: anywhere;
+}
+
+.choose-priority {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 5px;
 }
