@@ -1,146 +1,106 @@
 import { useState } from 'react';
-import { ITasks } from './allBoardsContainer';
+import { DeleteTaskFunction, IBoard, ITask, UpdateTaskFunction } from '../models/models';
+import { Task } from './one-task';
 
-type DeleteTaskFunction = (id: string | number) => Promise<void>;
-type UpdateTaskFunction = (
-  id: string | number,
-  title: string,
-  descr: string,
-  priority: string
-) => void;
+export function TasksBoard({ data }: { data: IBoard[] }) {
+  const [lockalData, setLockalData] = useState(data);
+  const [currentBoard, setCurrentBoard] = useState<IBoard>();
+  const [currTask, setCurrTask] = useState<ITask | undefined>();
+  const [edit, setEdit] = useState<number | null>(null);
+  const [changing, setChanging] = useState<boolean>(false);
 
-export function TasksBoard({
-  data,
-  deleteTask,
-  editing,
-  updateTask,
-}: {
-  data: ITasks[];
-  deleteTask: DeleteTaskFunction;
-  updateTask: UpdateTaskFunction;
-  editing: boolean;
-}) {
-  const [title, setTitle] = useState('');
-  const [descr, setDescr] = useState('');
-  const [priority, setPriority] = useState('');
-  const [editingItemId, setEditingItemId] = useState<number | null>(null);
-
-  const handlerChangesT = (event: React.FormEvent<HTMLDivElement>) => {
-    const newContent = event.currentTarget.textContent || '';
-    setTitle(newContent);
+  const updateAction: UpdateTaskFunction = (id, title, descr, priority) => {
+    setEdit(id);
+    setChanging(!changing);
   };
-  const handlerChangesD = (event: React.FormEvent<HTMLDivElement>) => {
-    const newContent = event.currentTarget.textContent || '';
-    setDescr(newContent);
+
+  const deleteAction: DeleteTaskFunction = (task, board) => {
+    const idx = board.tasks.indexOf(task);
+    delete board.tasks[idx];
+    console.log(board);
+  };
+
+  const handleDragStart = (board: IBoard, task: ITask) => {
+    setCurrTask(task);
+    setCurrentBoard(board);
+  };
+  const currTaskIdx = currentBoard?.tasks.indexOf(currTask!);
+
+  const handleEmptyBoard = (e: React.DragEvent<HTMLDivElement>, board: IBoard) => {
+    e.stopPropagation();
+    e.preventDefault();
+    if (board.id !== currentBoard?.id && board.tasks.length === 0) {
+      board.tasks.push(currTask!);
+      currentBoard?.tasks.splice(currTaskIdx!, 1);
+      setCurrentBoard(board);
+      console.log(currTask, e);
+    }
+  };
+
+  const handleDragEnter = (e: React.DragEvent<HTMLDivElement>, board: IBoard, task: ITask, taskIdx: number) => {
+    e.stopPropagation();
+    e.preventDefault();
+
+    const currTaskIdx: number | undefined = currentBoard?.tasks.indexOf(currTask!);
+
+    if (board.id !== currentBoard?.id && currTask?.id !== task.id) {
+      if (board.tasks.includes(currTask!)) {
+        return;
+      } else {
+        board.tasks.splice(currTaskIdx!, 0, currTask!);
+        currentBoard?.tasks.splice(currTaskIdx!, 1);
+        setCurrentBoard(board);
+      }
+    }
+    if (currTask?.id !== task.id && currentBoard?.id === board.id) {
+      [board.tasks[taskIdx], board.tasks[currTaskIdx!]] = [board.tasks[currTaskIdx!], board.tasks[taskIdx]];
+
+      const tar = lockalData.map(b => {
+        if (b.id === board.id) {
+          return board;
+        }
+        if (b.id === currentBoard?.id) {
+          return currentBoard!;
+        }
+        return b;
+      });
+
+      setLockalData(tar);
+    }
   };
 
   return (
     <>
-      <div className="board-container">
-        {data.map((item) => {
-          const isEditing = editingItemId === item.id;
-          return (
-            <div
-              className={`task-container ${item.priority}`}
-              key={item.id}
-            >
-              <div className="task-content">
-                <div className="task-header">
-                  <button
-                    disabled={editing && !isEditing}
-                    className="close-btn"
-                    onClick={() => {
-                      updateTask(item.id, title, descr, priority);
-                      setEditingItemId(item.id);
-                    }}
-                  >
-                    {isEditing && editing ? 'OK' : 'Update'}
-                  </button>
-                  <span
-                    onInput={handlerChangesT}
-                    className={isEditing && editing ? 'updating' : 'defoult'}
-                    contentEditable={
-                      isEditing && editing === true ? 'true' : 'false'
-                    }
-                  >
-                    {item.title}
-                  </span>
-
-                  <button
-                    disabled={editing && !isEditing}
-                    className="close-btn"
-                    onClick={() => {
-                      setEditingItemId(null);
-                      deleteTask(item.id);
-                    }}
-                  >
-                    Delete
-                  </button>
-                </div>
-                <div className="task-description">
-                  <p
-                    onInput={handlerChangesD}
-                    className={isEditing && editing ? 'updating' : 'defoult'}
-                    contentEditable={
-                      isEditing && editing === true ? 'true' : 'false'
-                    }
-                  >
-                    {item.descr}
-                  </p>
-                </div>
-              </div>
-              {isEditing && editing ? (
-                <div className="choose-priority">
-                  <span
-                    style={{ padding: '5px', color: 'black', fontSize: '24px' }}
-                  >
-                    Low
-                  </span>
-                  <input
-                    type="radio"
-                    name="priority"
-                    onChange={() => {
-                      setPriority('low');
-                      item.priority = 'low';
-                    }}
-                    value={'low'}
-                  />
-                  <span
-                    style={{ padding: '5px', color: 'black', fontSize: '24px' }}
-                  >
-                    Medium
-                  </span>
-                  <input
-                    type="radio"
-                    name="priority"
-                    onChange={() => {
-                      setPriority('medium');
-                      item.priority = 'medium';
-                    }}
-                    value={'medium'}
-                  />
-                  <span
-                    style={{ padding: '5px', color: 'black', fontSize: '24px' }}
-                  >
-                    High
-                  </span>
-                  <input
-                    type="radio"
-                    name="priority"
-                    onChange={() => {
-                      setPriority('high');
-                      item.priority = 'high';
-                    }}
-                    value={'high'}
+      {lockalData.map(board => {
+        return (
+          <div onDragEnter={e => handleEmptyBoard(e, board)} key={board.id} className='board-container'>
+            {board.titleBoard}
+            {board.tasks.map((task, taskId) => {
+              const isEditing = edit === task.id;
+              return (
+                <div
+                  draggable
+                  onDragStart={() => {
+                    handleDragStart(board, task);
+                  }}
+                  onDragEnter={e => {
+                    handleDragEnter(e, board, task, taskId);
+                  }}>
+                  <Task
+                    key={taskId}
+                    updateTask={updateAction}
+                    deleteTask={deleteAction}
+                    taskProp={task}
+                    board={board}
+                    editing={isEditing}
+                    changing={changing}
                   />
                 </div>
-              ) : (
-                <></>
-              )}
-            </div>
-          );
-        })}
-      </div>
+              );
+            })}
+          </div>
+        );
+      })}
     </>
   );
 }
