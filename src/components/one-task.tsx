@@ -5,14 +5,14 @@ export function Task({
   updateTask,
   deleteTask,
   taskProp,
-  editing,
+  isCurrTaskID,
   changing,
   board,
 }: {
   updateTask: UpdateTaskFunction;
   deleteTask: DeleteTaskFunction;
   taskProp: ITask;
-  editing: boolean;
+  isCurrTaskID: boolean;
   changing: boolean;
   board: IBoard;
 }) {
@@ -23,27 +23,26 @@ export function Task({
   const handlerUpdateBtn = (currTask: ITask) => {
     updateTask(currTask.id, title, descr, priority);
   };
+  console.log(changing, isCurrTaskID);
 
   return (
     <>
       <div className={`task-container ${taskProp.priority}`} key={taskProp.id}>
         <div className='task-content'>
           <div className='task-header'>
-            <button onClick={() => handlerUpdateBtn(taskProp)} disabled={changing && !editing} className='close-btn'>
-              {changing && editing ? 'OK' : 'Update'}
+            <button onClick={() => handlerUpdateBtn(taskProp)} disabled={changing && !isCurrTaskID} className='close-btn'>
+              {changing && isCurrTaskID ? 'OK' : 'Update'}
             </button>
-
             <input
               type='text'
               defaultValue={taskProp.title}
-              readOnly={changing && !editing}
+              readOnly={!isCurrTaskID}
               onChange={e => {
                 setTitle(e.target.value);
               }}
             />
-
             <button
-              disabled={changing && !editing}
+              disabled={changing && !isCurrTaskID}
               className='close-btn'
               onClick={() => {
                 deleteTask(taskProp, board);
@@ -55,14 +54,14 @@ export function Task({
             <input
               type='text'
               defaultValue={taskProp.descr}
-              readOnly={changing && !editing}
+              readOnly={!isCurrTaskID}
               onChange={e => {
                 setDescr(e.target.value);
               }}
             />
           </div>
         </div>
-        {changing && editing && (
+        {changing && isCurrTaskID && (
           <div className='choose-priority'>
             <span style={{ padding: '5px', color: 'black', fontSize: '24px' }}>Low</span>
             <input

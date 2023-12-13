@@ -6,18 +6,26 @@ export function TasksBoard({ data }: { data: IBoard[] }) {
   const [lockalData, setLockalData] = useState(data);
   const [currentBoard, setCurrentBoard] = useState<IBoard>();
   const [currTask, setCurrTask] = useState<ITask | undefined>();
-  const [edit, setEdit] = useState<number | null>(null);
+  const [currTaskID, setCurrTaskID] = useState<number | null>(null);
   const [changing, setChanging] = useState<boolean>(false);
 
   const updateAction: UpdateTaskFunction = (id, title, descr, priority) => {
-    setEdit(id);
     setChanging(!changing);
+    if (currTaskID === id) {
+      setCurrTaskID(null);
+    } else {
+      setCurrTaskID(id);
+    }
   };
 
   const deleteAction: DeleteTaskFunction = (task, board) => {
     const idx = board.tasks.indexOf(task);
     delete board.tasks[idx];
-    console.log(board);
+    setLockalData(
+      lockalData.map(b => {
+        return b;
+      })
+    );
   };
 
   const handleDragStart = (board: IBoard, task: ITask) => {
@@ -29,11 +37,10 @@ export function TasksBoard({ data }: { data: IBoard[] }) {
   const handleEmptyBoard = (e: React.DragEvent<HTMLDivElement>, board: IBoard) => {
     e.stopPropagation();
     e.preventDefault();
-    if (board.id !== currentBoard?.id && board.tasks.length === 0) {
+    if (board.id !== currentBoard?.id) {
       board.tasks.push(currTask!);
       currentBoard?.tasks.splice(currTaskIdx!, 1);
       setCurrentBoard(board);
-      console.log(currTask, e);
     }
   };
 
@@ -76,7 +83,7 @@ export function TasksBoard({ data }: { data: IBoard[] }) {
           <div onDragEnter={e => handleEmptyBoard(e, board)} key={board.id} className='board-container'>
             {board.titleBoard}
             {board.tasks.map((task, taskId) => {
-              const isEditing = edit === task.id;
+              const isCurrTaskID = currTaskID === task.id;
               return (
                 <div
                   draggable
@@ -92,7 +99,7 @@ export function TasksBoard({ data }: { data: IBoard[] }) {
                     deleteTask={deleteAction}
                     taskProp={task}
                     board={board}
-                    editing={isEditing}
+                    isCurrTaskID={isCurrTaskID}
                     changing={changing}
                   />
                 </div>
