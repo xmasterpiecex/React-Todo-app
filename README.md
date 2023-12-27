@@ -1,18 +1,18 @@
-# Clone your fork of this repository
+### Clone your fork of this repository
 
-# Switch to project directory
+### Switch to project directory
 
 cd frontend
 
-# Open secound separate terminal in folder
+### Open secound separate terminal in folder
 
 backend
 
-# Install dependencies /in two terminals as well/
+### Install dependencies /in two terminals as well/
 
 npm install
 
-# Start the app
+### Start the app
 
 - Run the following from two separate terminal windows/tabs
   npm run dev
