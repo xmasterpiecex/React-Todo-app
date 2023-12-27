@@ -14,14 +14,7 @@ export function NewTodoBtn({ text }: { text: string }) {
         {text}
       </button>
       {showModal &&
-        createPortal(
-          <CreateTodoForm
-            onClose={() => {
-              setShowModal(false);
-            }}
-          />,
-          document.body
-        )}
+        createPortal(<CreateTodoForm onClose={setShowModal} />, document.body)}
     </div>
   );
 }
