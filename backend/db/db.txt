@@ -1,0 +1,5 @@
+[
+  { "id": "1", "titleBoard": "New Tasks", "tasks": []  },
+  { "id": "2", "titleBoard": "In Progress", "tasks": [] },
+  { "id": "3", "titleBoard": "Finished", "tasks": [] }
+]

@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import axios from 'axios';
 
-export function CreateTodoForm({ onClose }: { onClose: React.Dispatch<React.SetStateAction<boolean>>; editing: boolean }) {
+export function CreateTodoForm({ onClose }: { onClose: React.Dispatch<React.SetStateAction<boolean>> }) {
   const [title, setTitle] = useState('');
   const [descr, setDescr] = useState('');
   const [priority, setPriority] = useState('');
@@ -11,7 +11,7 @@ export function CreateTodoForm({ onClose }: { onClose: React.Dispatch<React.SetS
       alert('fill all fields');
       return;
     }
-    await axios.post(`https://65579c69bd4bcef8b612f35e.mockapi.io/someData`, {
+    await axios.post(`/api/boards/1/tasks`, {
       title,
       descr,
       priority,

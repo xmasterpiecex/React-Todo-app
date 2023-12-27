@@ -21,9 +21,8 @@ export function Task({
   const [priority, setPriority] = useState('');
 
   const handlerUpdateBtn = (currTask: ITask) => {
-    updateTask(currTask.id, title, descr, priority);
+    updateTask(board, currTask.id, title, descr, priority);
   };
-  console.log(changing, isCurrTaskID);
 
   return (
     <>
@@ -35,6 +34,7 @@ export function Task({
             </button>
             <input
               type='text'
+              name='title'
               defaultValue={taskProp.title}
               readOnly={!isCurrTaskID}
               onChange={e => {
@@ -53,6 +53,7 @@ export function Task({
           <div className='task-description'>
             <input
               type='text'
+              name='description'
               defaultValue={taskProp.descr}
               readOnly={!isCurrTaskID}
               onChange={e => {
